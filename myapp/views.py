@@ -9,6 +9,10 @@ import pandas as pd
 import numpy as np
 from scipy.stats import gaussian_kde
 from .utils import extract_wine_features
+import json
+import torch
+import torch.nn as nn
+from .models import Net
 
 
 
@@ -34,12 +38,19 @@ def wine_details(request, wine_name, customize):
 
     return render(request, 'wine_details.html', context)
 
-def feature_details(request, wine_name, feature_name):
+def feature_details(request, wine_name, feature_name, feature_value):
     # Assume you have a DataFrame `wine_df` with your wine data
     # and a way to get the specific value for the current wine's feature
     wine_data = pd.read_csv("datasetup/wine.csv", index_col=0)
-    feature_value = wine_data.get(feature_name)[wine_name]
-    wine_quality = wine_data.loc[wine_name, 'quality']
+    try:
+        feature_value = feature_value.replace("'", '"')
+        feature_value = json.loads(feature_value)['value']
+    except:
+        pass
+    try:
+        wine_quality = wine_data.loc[wine_name, 'quality']
+    except:
+        wine_quality = 0
 
     # Create a histogram & KDE plot
     fig = px.histogram(wine_data, x=feature_name, color="quality", marginal="rug", histnorm="percent", barmode ="overlay")
@@ -47,6 +58,7 @@ def feature_details(request, wine_name, feature_name):
     for trace in fig.data:
         trace.update(opacity=1)
 
+    
     for trace in fig.data:
         if int(trace.name) == wine_quality:
             vcolor = trace.marker.color
@@ -72,6 +84,7 @@ def feature_details(request, wine_name, feature_name):
 
         fig.add_trace(kde_line)
 
+    vcolor = 'black'
     fig.add_vline(x=feature_value, line_width=3, line_dash="dash", line_color=vcolor)
 
     # Convert Plotly figure to HTML
@@ -114,7 +127,7 @@ def quality(request, wine_name):
     }
     return render(request, 'quality.html', context)
 
-def features(request, wine_name, feature_name):
+def features(request, wine_name, feature_name, feature_value):
     # Load your dataset
     wine_data = pd.read_csv("datasetup/wine.csv", index_col=0)
     columns = list(wine_data.columns)
@@ -152,6 +165,7 @@ def features(request, wine_name, feature_name):
 
     context = {
         'feature_name': feature_name,
+        'feature_value': feature_value,
         'subtext': subtext,
         'max1': max_wine_name[0],
         'max2': max_wine_name[1],
@@ -172,6 +186,39 @@ def customize(request):
         'wine_features': columns,
     }
     return render(request, 'customize.html', context)
+
+def predict(request, wine_name, feature_values):
+    model = Net(256)
+    model.load_state_dict(torch.load('myapp/model.pth'))
+    model.eval()  # Set the model to evaluation mode
+
+    wine_data = pd.read_csv("datasetup/wine.csv", index_col=0)
+    columns = list(wine_data.columns)
+    idx = 0
+    feature_values_list = []  # Assuming 11 features
+    for val in feature_values.split(',')[:11]:
+        if val == "---":
+            val = wine_data[columns[idx]].mean()
+        feature_values_list.append(float(val))
+
+    # Convert the list to a PyTorch tensor
+    features_tensor = torch.tensor([feature_values_list])  # Shape: [1, 11]
+
+    # Make the prediction
+    with torch.no_grad():  # Ensure no gradient is computed
+        prediction = model(features_tensor)
+
+    # Convert the prediction to a desired format (e.g., scalar value)
+    _, predicted = torch.max(prediction.data, 1)
+    map = {0: 4, 1: 5, 2: 6, 3: 7}
+    predicted = map[predicted.item()]
+
+    # Render a template with the prediction result
+    return render(request, 'predict.html', {
+        'wine_name': wine_name,
+        'predicted': predicted,
+        'quality': feature_values.split(',')[11][0],
+    })
 
 def process_form(request):
     if request.method == 'POST':

@@ -64,8 +64,8 @@
         <p class="subtitle">{{ wine_name }} compared to other wines</p>
         
         <!-- Navigation buttons -->
-        <a href="{% url 'wine_details' wine_name %}" class="navigation-btn">Back to Wine Details</a>
-        <a href="{% url 'features' wine_name=wine_name feature_name=feature_name %}" class="navigation-btn">Explore Feature</a>
+        <a href="{% url 'wine_details' wine_name 0 %}" class="navigation-btn">Back to Wine Details</a>
+        <a href="{% url 'features' wine_name=wine_name feature_name=feature_name feature_value=feature_value%}" class="navigation-btn">Explore Feature</a>
         
         <!-- Plotly count plot of wine qualities -->
         <div id="plot">{{ plot_div|safe }}</div>

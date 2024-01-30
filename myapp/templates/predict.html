@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wine Quality Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #eceff1;
+        }
+        .circle-container {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 30px;
+        }
+        .circle {
+            border-radius: 60%;
+            width: 260px;
+            height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #607d8b;
+            color: white;
+            font-size: 2em;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+        }
+        .circle-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8em;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .home-btn {
+            font-family: 'Poppins', sans-serif;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: #ff5722;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        .home-btn:hover {
+            background-color: #e64a19;
+        }
+    </style>
+</head>
+<body>
+    <div class="circle-container">
+        <div class="circle">
+            <span class="circle-label">Predicted Rating</span>
+            {{ predicted }}
+        </div>
+        <div class="circle">
+            <span class="circle-label">Actual Rating</span>
+            {{ quality }}
+        </div>
+    </div>
+    <button class="home-btn" onclick="window.location.href='/'">Back to Home</button>
+</body>
+</html>

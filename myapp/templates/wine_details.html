@@ -132,24 +132,53 @@
                         <a href="{% url 'quality' wine_name %}">
                             <div class="circle">
                                 <span class="feature-name">{{ feature_name }}</span>
-                                <span class="feature-value">{{ feature_value }}</span>
+                                <span class="feature-value">{{ feature_value.value }}</span>
                             </div>
                         </a>
                     {% else %}
                         <!-- For the first 11 features, redirect to their respective pages -->
-                        <a href="{% url 'feature_details' wine_name feature_name %}">
+                        <a href="{% url 'feature_details' wine_name feature_name feature_value.value%}">
                             <div class="circle">
                                 <span class="feature-name">{{ feature_name }}</span>
-                                <span class="feature-value">{{ feature_value }}</span>
+                                <span class="feature-value">{{ feature_value.value }}</span>
                             </div>
                         </a>
                     {% endif %}
+                    <input type="hidden" name="{{ feature_name }}" value="{{ feature_value.value }}" class="feature-input">
                 </div>
             {% endfor %}
+            <input type="hidden" id="wineName" value="{{ wine_name }}" class="wineName">
         </div>
         <div class="navigation-btn-container">
+            <!-- Existing Home Button -->
             <a href="{% url 'home' %}" class="navigation-btn">Home</a>
+            <button onclick="predictQuality()" class="navigation-btn">Predict Quality</button>
         </div>
     </div>
+    <script>
+        function predictQuality() {
+            const featureInputs = document.querySelectorAll('.feature-input');
+            let featureValues = [];
+
+            featureInputs.forEach(input => {
+                featureValues.push(input.value || '-100');
+            });
+
+            const featureValuesString = featureValues.join(',');
+
+            // Fetch the wine name from the hidden input
+            const wineNameElement = document.getElementById('wineName'); // Use querySelector for single element
+            const wineName = wineNameElement ? wineNameElement.value : '';
+
+            console.log(wineName); // Use console.log for debugging
+
+            // Construct the URL
+            const baseUrl = '/predict/'; // Adjust based on your URL structure
+            const query = encodeURIComponent(wineName) + '/' + featureValuesString;
+
+            // Redirect
+            window.location.href = baseUrl + query;
+        }
+    </script>
 </body>
 </html>

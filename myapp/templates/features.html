@@ -95,7 +95,7 @@
     {% if feature_name == "quality" %}
         <a href="{% url 'quality' wine_name %}" class="navigation-btn">Back to Feature Details</a>
     {% else %}
-        <a href="{% url 'feature_details' wine_name feature_name %}" class="navigation-btn">Back to Feature Details</a>
+        <a href="{% url 'feature_details' wine_name feature_name feature_value%}" class="navigation-btn">Back to Feature Details</a>
     {% endif %}
     <a href="{% url 'home' %}" class="navigation-btn">Back to Home</a>
 </body>
