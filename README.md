@@ -50,6 +50,9 @@ The application will be available at `http://localhost:8000`.
 - **Learn and Explore**: Select existing wines to learn more about wine features.
 - **Create Blend**: Select "customize" to customize your wine blend.
 - **Quality Prediction**: After customizing, get an instant quality prediction for your blend.
+ - Predictions are made by a neural-network-based model. After finetuning, it achieves around 60% accuracy and 96% accuracy within plus and minus one margin of error.
+ - Model Training, EDA, and Data Visualization were implemented on SingleStore.
+
 
 ## Authors
 
