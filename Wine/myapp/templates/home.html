@@ -1,0 +1,78 @@
+{% load static %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wine Selection</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-image: url('{% static "home.png" %}');
+            background-size: cover; 
+        }
+        .container {
+            padding-top: 50px;
+        }
+
+        .header {
+            text-align: center;
+            color: #8b0000; /* Beige/Gold color */
+        }
+
+        .wine-form {
+            background-color: #d2b48c; /* Dark red wine color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Slightly more pronounced shadow */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group > * {
+            margin-bottom: 15px; /* Adds space below each form element */
+        }
+
+        .submit-btn {
+            background-color: #892a2a; /* Dark grayish-blue color */
+            color: white;
+            border: none;
+            transition: background-color 0.3s; /* Smooth transition on hover */
+        }
+
+        .submit-btn:hover {
+            background-color: #9a8c98; /* Lighter grayish-blue color on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="header">
+                    <h1>Craft Your Wine Experience</h1>
+                </div>
+                <div class="wine-form">
+                    <form method="post" action="{% url 'process_form' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="spacer"></div>
+                            {{ form.wine_select }}
+                            <button type="submit" class="btn submit-btn">Cheers!</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

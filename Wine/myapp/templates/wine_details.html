@@ -1,0 +1,155 @@
+{% load static %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ wine_name }} Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <style>
+        /* Existing styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('{% static "wine_details.png" %}'); /* Replace with your background image URL */
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            max-height: 800px;
+            background-color: rgba(98, 46, 46, 0.8); /* Semi-transparent white */
+            padding: 50px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 50px; /* Added top margin for more space */
+            margin-bottom: 100px;
+        }
+        .wine-title {
+            color: #ffffff; /* Dark red color */
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 40px; /* Increased bottom margin for more space */
+        }
+        .wine-features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 50px; /* Increased gap */
+            justify-items: center;
+        }
+        .feature {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .circle {
+            background-color: #892a2a; /* Dark red wine color */
+            color: white;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            font-family: 'Playfair Display', serif;
+            position: relative; /* Added for positioning the value tooltip */
+            cursor: pointer; /* Changes the cursor to indicate interactivity */
+        }
+        @media (max-width: 768px) {
+            .wine-features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .circle {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        @media (max-width: 480px) {
+            .wine-features {
+                grid-template-columns: 1fr;
+            }
+        }
+        .feature-name, .feature-value {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.3s ease; /* Smooth transition for the hover effect */
+        }
+
+        .feature-value {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0; /* Initially hidden */
+        }
+
+        .circle:hover .feature-name {
+            opacity: 0; /* Hide the name on hover */
+        }
+
+        .circle:hover .feature-value {
+            opacity: 1; /* Show the value on hover */
+        }
+        .navigation-btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Vertically center the content */
+        }
+
+        .navigation-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            border: 2px solid #ffffff; /* Adjust the border width here */
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: rgb(165, 0, 0);
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .navigation-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="wine-title">{{ wine_name }}</h1>
+        <div class="wine-features">
+            {% for feature_name, feature_value in wine_features.items %}
+                <div class="feature">
+                    {% if forloop.counter == 12 %}
+                        <!-- For the 12th feature, redirect to the 'quality' page -->
+                        <a href="{% url 'quality' wine_name %}">
+                            <div class="circle">
+                                <span class="feature-name">{{ feature_name }}</span>
+                                <span class="feature-value">{{ feature_value }}</span>
+                            </div>
+                        </a>
+                    {% else %}
+                        <!-- For the first 11 features, redirect to their respective pages -->
+                        <a href="{% url 'feature_details' wine_name feature_name %}">
+                            <div class="circle">
+                                <span class="feature-name">{{ feature_name }}</span>
+                                <span class="feature-value">{{ feature_value }}</span>
+                            </div>
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="navigation-btn-container">
+            <a href="{% url 'home' %}" class="navigation-btn">Home</a>
+        </div>
+    </div>
+</body>
+</html>

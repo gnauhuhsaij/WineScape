@@ -1,0 +1,102 @@
+{% load static %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feature Analysis</title>
+    <!-- Include Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('{% static "features.png" %}'); /* Replace with your background image URL */
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #ffffff;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* Adjusted for different column sizes */
+            /* grid-template-rows: 1.5fr 0.5fr; Auto for top row, 1fr for bottom row */
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            margin-top: 60px;
+            margin-bottom: 10px;
+        }
+        .feature-info, .boxplot{
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: rgba(144, 107, 107, 0.504);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .feature-info h1 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+        }
+        .feature-info p {
+            font-size: 1.5em;
+        }
+        a {
+            color: #ff0800;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #ffffff;
+        }
+        .navigation-btn {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 0; /* Adjust the top and bottom padding */
+            width: 200px; /* Set a specific width for the button */
+            border: none;
+            border-radius: 5px;
+            background-color: #fafdff;
+            color: rgb(255, 0, 0);
+            font-family: 'Montserrat', sans-serif;
+            text-align: center; /* Center text horizontally */
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+
+        .navigation-btn:hover {
+            background-color: #920e0eaa;
+        }
+        .extreme-wines ul {
+            padding: 0;
+        }
+        .extreme-wines li {
+            list-style: none;
+        }
+    </style>
+    <!-- Include Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="feature-info">
+            <h1>{{ feature_name }}</h1>
+            <p>{{ subtext }}</p>
+            <p>Extreme Wines:</p>
+            <ul>
+                <li>Max:<a href="{% url 'wine_details' max1 0 %}"> {{ max1 }}</a> | <a href="{% url 'wine_details' max2 0 %}">{{ max2 }}</a> | <a href="{% url 'wine_details' max3 0 %}">{{ max3 }}</a></li>
+                <li>Min:<a href="{% url 'wine_details' min1 0 %}"> {{ min1 }}</a> | <a href="{% url 'wine_details' min2 0 %}">{{ min2 }}</a> | <a href="{% url 'wine_details' min3 0 %}">{{ min3}}</a></li>
+            </ul>
+        </div>
+        <div class="boxplot" id="plot">
+            {{ plot_div|safe }}
+        </div>
+    </div>
+    {% if feature_name == "quality" %}
+        <a href="{% url 'quality' wine_name %}" class="navigation-btn">Back to Feature Details</a>
+    {% else %}
+        <a href="{% url 'feature_details' wine_name feature_name %}" class="navigation-btn">Back to Feature Details</a>
+    {% endif %}
+    <a href="{% url 'home' %}" class="navigation-btn">Back to Home</a>
+</body>
+</html>

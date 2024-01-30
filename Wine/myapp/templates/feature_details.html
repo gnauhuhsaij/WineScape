@@ -1,0 +1,74 @@
+{% load static %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ feature_name }} Details - {{ wine_name }}</title>
+    <!-- Include Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('{% static "feature_details.png" %}'); /* Replace with your background image URL */
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .title {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            color: #502c2c;
+        }
+        .subtitle {
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #ff0000;
+        }
+        .navigation-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 2px solid #502c2c; /* Add a border with desired style and color */
+            border-radius: 5px;
+            color: #985555;
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: none; /* Removes underline from links */
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .navigation-btn:hover {
+            background-color: #550808;
+        }
+        #plot {
+            margin-top: 20px;
+            border: 2px solid #502c2c; /* Add a border with desired style and color */
+            border-radius: 5px;
+
+        }
+    </style>
+    <!-- Include Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">{{ wine_name }} - {{ feature_name }}</h1>
+        <p class="subtitle">{{ wine_name }} compared to other wines</p>
+        
+        <!-- Navigation buttons -->
+        <a href="{% url 'wine_details' wine_name 0 %}" class="navigation-btn">Back to Wine Details</a>
+        <a href="{% url 'features' wine_name=wine_name feature_name=feature_name %}" class="navigation-btn">Explore Feature</a>
+        
+        <!-- Plotly graph -->
+        <div id="plot">{{ plot_div|safe }}</div>
+    </div>
+</body>
+</html>

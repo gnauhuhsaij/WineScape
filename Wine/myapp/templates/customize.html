@@ -1,0 +1,68 @@
+{% load static %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customize Your Wine</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns */
+            grid-template-rows: repeat(3, 1fr); /* 3 rows */
+            gap: 20px;
+            padding: 20px;
+            max-width: 800px; /* Adjust as needed */
+            margin: auto;
+            background-color: rgb(132, 35, 0); /* For debugging */
+            border-radius: 5%;
+        }
+    
+        .circle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #ff9393;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            border: 1px solid #ccc;
+            background-color: rgb(184, 88, 104); /* For debugging */
+        }
+    
+        form {
+            width: 100%;
+            margin: auto;
+        }
+    
+        input[type="number"] {
+            width: 60px;
+            margin-top: 5px;
+        }
+    
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <form id="wineForm">
+        <div class="container">
+            {% for feature in wine_features %}
+                <div class="circle">
+                    <label for="{{ feature }}">{{ feature }}</label>
+                    <input type="number" id="{{ feature }}" name="{{ feature }}" min="-100" max="100" placeholder="-100">
+                </div>
+            {% endfor %}
+            <div class="wine-name-input">
+                <label for="wineName">Custom Wine Name:</label>
+                <input type="text" id="wineName" name="wineName" placeholder="Enter wine name">
+            </div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
