@@ -21,25 +21,25 @@ You'll need to have Python installed on your system. This project is built using
 
 1. **Clone the Repository**
    
-git clone https://github.com/your-username/winescape.git
+`git clone https://github.com/your-username/winescape.git`
 
 2. **Set Up a Virtual Environment** (Optional but recommended)
 
-python -m venv venv
-source venv/bin/activate # On Windows use venv\Scripts\activate
+`python -m venv venv`
+`source venv/bin/activate # On Windows use venv\Scripts\activate`
 
 3. **Install Required Packages**
 
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 4. **Migrate Database** 
 
-python manage.py migrate
+`python manage.py migrate`
 
 
 5. **Run the Application**
 
-python manage.py runserver
+`python manage.py runserver`
 
 
 The application will be available at `http://localhost:8000`.
